@@ -27,7 +27,7 @@ Shared UI lives in `src/components`:
 - `skeleton`: animated loading placeholders
 - `states`: empty and error state messaging
 
-Theme tokens live in `src/theme/tokens.ts`. Tamagui is configured in `src/theme/tamagui.config.ts`, and NativeWind is configured through `tailwind.config.js`.
+Theme tokens live in `src/theme/tokens.ts`. All styling uses React Native `StyleSheet` driven by these tokens — no external styling/UI library is used.
 
 ## Performance
 

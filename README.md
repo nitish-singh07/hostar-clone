@@ -1,6 +1,6 @@
 # JioHotstar Clone
 
-A production-style React Native UI clone of the JioHotstar mobile app, built with Expo SDK 56, Expo Router, TypeScript, FlashList, Expo Image, Reanimated, NativeWind, and Tamagui.
+A production-style React Native UI clone of the JioHotstar mobile app, built with Expo SDK 56, Expo Router, TypeScript, FlashList, Expo Image, and Reanimated. Styling uses React Native `StyleSheet` with a shared design-token system (`src/theme/tokens.ts`).
 
 The project is frontend-only. All content, profile data, loading states, and error states are powered by asynchronous mock services with simulated latency.
 
@@ -42,7 +42,7 @@ Important folders:
 - `src/services/api`: async service methods consumed by screens
 - `src/services/mock`: realistic mock content and profile data
 - `src/types`: shared TypeScript interfaces
-- `src/theme`: palette, spacing, radius, typography, and Tamagui config
+- `src/theme`: palette, spacing, radius, and typography design tokens
 - `src/components`: reusable cards, carousels, skeletons, profile, state, and common UI components
 - `src/hooks`: shared data-loading hooks
 

@@ -1,15 +1,14 @@
 import { DarkTheme, ThemeProvider, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { TamaguiProvider } from 'tamagui';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { PlayerProvider } from '@/player/PlayerProvider';
-import { tamaguiConfig } from '@/theme/tamagui.config';
 
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <TamaguiProvider config={tamaguiConfig} defaultTheme="dark">
+      <SafeAreaProvider>
         <ThemeProvider value={DarkTheme}>
           <StatusBar style="light" />
           <PlayerProvider>
@@ -24,7 +23,7 @@ export default function RootLayout() {
             </Stack>
           </PlayerProvider>
         </ThemeProvider>
-      </TamaguiProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -10,7 +10,6 @@ import {
 
 import { HeroBanner } from "@/components/cards/HeroBanner";
 import { ContentRow } from "@/components/carousel/ContentRow";
-import { type BottomSheetItem } from "@/components/common/BottomSheet";
 import { Screen } from "@/components/common/Screen";
 import { ScreenSkeleton } from "@/components/skeleton/ScreenSkeleton";
 import { StateMessage } from "@/components/states/StateMessage";
@@ -26,7 +25,6 @@ export default function HomeScreen() {
   const { data, error, isLoading, refresh } = useAsyncResource(getHomeData);
   const continueWatching = useAsyncResource(getContinueWatching);
   const [activeHero, setActiveHero] = useState(0);
-  const [menuVisible, setMenuVisible] = useState(false);
 
   // Keep Continue Watching fresh after returning from the player.
   const refreshContinue = continueWatching.refresh;
@@ -40,27 +38,6 @@ export default function HomeScreen() {
     router.push(`/details/${item.id}`);
   }, []);
 
-  const menuItems: BottomSheetItem[] = [
-    {
-      id: "browse",
-      label: "Browse Categories",
-      icon: "apps",
-      onPress: () => {},
-    },
-    {
-      id: "watchlist",
-      label: "My Watchlist",
-      icon: "heart",
-      onPress: () => {},
-    },
-    { id: "settings", label: "Settings", icon: "settings", onPress: () => {} },
-    {
-      id: "help",
-      label: "Help & Support",
-      icon: "help-circle",
-      onPress: () => {},
-    },
-  ];
 
   const heroSections = useMemo(() => data?.hero ?? [], [data]);
 
