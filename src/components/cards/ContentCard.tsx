@@ -11,10 +11,22 @@ type ContentCardProps = {
   variant?: 'poster' | 'wide';
   onPress: (item: ContentItem) => void;
   onLongPress?: (item: ContentItem) => void;
+  /** Overrides the fixed width; height is derived from the variant's aspect ratio. */
+  width?: number;
 };
 
-function ContentCardBase({ item, onLongPress, onPress, variant = 'poster' }: ContentCardProps) {
+// Aspect ratios from the default fixed sizes (poster 132×184, wide 220×124).
+const POSTER_RATIO = 184 / 132;
+const WIDE_RATIO = 124 / 220;
+
+function ContentCardBase({ item, onLongPress, onPress, variant = 'poster', width }: ContentCardProps) {
   const isWide = variant === 'wide';
+  const sizeStyle =
+    width != null
+      ? { width, height: Math.round(width * (isWide ? WIDE_RATIO : POSTER_RATIO)) }
+      : isWide
+        ? styles.wideCard
+        : styles.posterCard;
 
   return (
     <Pressable
@@ -22,7 +34,7 @@ function ContentCardBase({ item, onLongPress, onPress, variant = 'poster' }: Con
       accessibilityLabel={`Open ${item.title}`}
       onPress={() => onPress(item)}
       onLongPress={onLongPress ? () => onLongPress(item) : undefined}
-      style={({ pressed }) => [styles.card, isWide ? styles.wideCard : styles.posterCard, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.card, sizeStyle, pressed && styles.pressed]}>
       <Image
         source={{ uri: isWide ? item.backdropUrl : item.posterUrl }}
         style={StyleSheet.absoluteFill}

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useMemo } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ContentCard } from '@/components/cards/ContentCard';
@@ -11,6 +11,16 @@ import { useAsyncResource } from '@/hooks/use-async-resource';
 import { getContentByIds } from '@/services/api/content';
 import { palette, spacing, typography } from '@/theme/tokens';
 import type { ContentItem } from '@/types/content';
+
+// Responsive grid: pick a column count that keeps cards a comfortable size on
+// any width, then size every card to fill its column so spacing stays even.
+const screenWidth = Dimensions.get('window').width;
+const H_PAD = spacing.md;
+const GAP = spacing.sm;
+const MIN_CARD = 104;
+const COLUMNS = Math.max(3, Math.floor((screenWidth - H_PAD * 2 + GAP) / (MIN_CARD + GAP)));
+const CARD_WIDTH = Math.floor((screenWidth - H_PAD * 2 - GAP * (COLUMNS - 1)) / COLUMNS);
+const CARD_HEIGHT = Math.round(CARD_WIDTH * (184 / 132));
 
 export default function CollectionScreen() {
   const params = useLocalSearchParams<{ title?: string; ids?: string }>();
@@ -57,9 +67,13 @@ export default function CollectionScreen() {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.grid}>
             {data.map((item) => (
-              <View key={item.id} style={styles.cardWrapper}>
-                <ContentCard item={item} onPress={openDetails} variant="poster" />
-              </View>
+              <ContentCard
+                key={item.id}
+                item={item}
+                onPress={openDetails}
+                variant="poster"
+                width={CARD_WIDTH}
+              />
             ))}
           </ScrollView>
         )}
@@ -71,10 +85,8 @@ export default function CollectionScreen() {
 function GridSkeleton() {
   return (
     <View style={styles.grid}>
-      {Array.from({ length: 9 }).map((_, index) => (
-        <View key={index} style={styles.cardWrapper}>
-          <SkeletonBlock width={132} height={184} />
-        </View>
+      {Array.from({ length: COLUMNS * 4 }).map((_, index) => (
+        <SkeletonBlock key={index} width={CARD_WIDTH} height={CARD_HEIGHT} />
       ))}
     </View>
   );
@@ -115,13 +127,10 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: H_PAD,
     paddingTop: spacing.md,
     paddingBottom: 120,
-    gap: spacing.md,
-  },
-  cardWrapper: {
-    width: 132,
+    columnGap: GAP,
+    rowGap: spacing.md,
   },
 });
