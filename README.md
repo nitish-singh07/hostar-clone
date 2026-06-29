@@ -1,56 +1,53 @@
-# Welcome to your Expo app 👋
+# JioHotstar Clone
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A production-style React Native UI clone of the JioHotstar mobile app, built with Expo SDK 56, Expo Router, TypeScript, FlashList, Expo Image, Reanimated, NativeWind, and Tamagui.
 
-## Get started
+The project is frontend-only. All content, profile data, loading states, and error states are powered by asynchronous mock services with simulated latency.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- Home feed with hero carousel, horizontal content rows, continue watching, trending, sports, and recommendations
+- Details screen with cinematic hero artwork, metadata, CTA actions, cast, tags, and related content
+- My Space profile screen with subscription summary, profile switcher, settings cards, watchlist, and downloads
+- Sports tab with live-score treatment and sports content rows
+- Bottom tab navigation plus native stack details navigation through Expo Router
+- Dark JioHotstar-like theme tokens and CTA gradient
+- Skeleton loading, empty states, error states, retry actions, and pull to refresh
+- Typed mock API service layer and reusable UI components
+- FlashList-powered horizontal carousels and Expo Image remote image loading
 
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Setup
 
 ```bash
-npm run reset-project
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Open the app from the Expo CLI output on Android or iOS. Android is the primary target; web support is not required for this assignment.
 
-### Other setup steps
+## Quality Checks
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npx tsc --noEmit
+npm run lint
+npx expo export --platform android --output-dir /tmp/hotstart-export
+```
 
-## Learn more
+## Architecture
 
-To learn more about developing your project with Expo, look at the following resources:
+The app uses `src/app` for Expo Router routes. The root layout provides the native stack, and `src/app/(tabs)` owns the bottom-tab experience. Details pages are pushed through `src/app/details/[id].tsx`.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Important folders:
 
-## Join the community
+- `src/services/api`: async service methods consumed by screens
+- `src/services/mock`: realistic mock content and profile data
+- `src/types`: shared TypeScript interfaces
+- `src/theme`: palette, spacing, radius, typography, and Tamagui config
+- `src/components`: reusable cards, carousels, skeletons, profile, state, and common UI components
+- `src/hooks`: shared data-loading hooks
 
-Join our community of developers creating universal apps.
+Screens do not import raw mock data directly. They call service methods and render loading, error, empty, and success states around those service results.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Notes
+
+The UI uses online-derived JioHotstar and Hotstar visual references, not official brand tokens. Poster and banner imagery is loaded from remote Unsplash URLs for assignment-safe mock content.
